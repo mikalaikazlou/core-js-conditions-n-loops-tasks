@@ -82,8 +82,17 @@ function canQueenCaptureKing(/* queen, king */) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  if (a < 1 || b < 1 || c < 1) {
+    return false;
+  }
+  if (a + b < c || b + c < a || a + c < b) {
+    return false;
+  }
+  if (a === b || b === c || a === c) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -153,8 +162,14 @@ function isPalindrome(/* str */) {
  *  'qwerty', 'Q'     => -1
  *  'qwerty', 'p'     => -1
  */
-function getIndexOf(/* str, letter */) {
-  throw new Error('Not implemented');
+function getIndexOf(str, letter) {
+  for (let index = 0; index < str.length; ) {
+    if (letter === str[index]) {
+      return index;
+    }
+    index += 1;
+  }
+  return -1;
 }
 
 /**
@@ -172,8 +187,17 @@ function getIndexOf(/* str, letter */) {
  *  12345, 0    => false
  *  12345, 6    => false
  */
-function isContainNumber(/* num, digit */) {
-  throw new Error('Not implemented');
+function isContainNumber(num, digit) {
+  let number = num;
+  let lastDigit;
+  while (number) {
+    lastDigit = number % 10;
+    if (lastDigit === digit) {
+      return true;
+    }
+    number = Math.trunc(number / 10);
+  }
+  return false;
 }
 
 /**
@@ -189,8 +213,25 @@ function isContainNumber(/* num, digit */) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let rightSum = 0;
+  let leftSum = 0;
+  if (arr.length === 0) {
+    return -1;
+  }
+  for (let index = 0; index < arr.length; ) {
+    if (index < Math.floor(arr.length / 2)) {
+      leftSum += arr[index];
+    }
+    if (index > Math.floor(arr.length / 2)) {
+      rightSum += arr[index];
+    }
+    index += 1;
+  }
+  if (rightSum === leftSum) {
+    return 2;
+  }
+  return -1;
 }
 
 /**
