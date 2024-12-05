@@ -310,21 +310,35 @@ function isContainNumber(num, digit) {
 function getBalanceIndex(arr) {
   let rightSum = 0;
   let leftSum = 0;
-  const lengthArr = arr.length;
-  if (lengthArr === 0) {
+  let shifted = 0;
+  let mediumLength = Math.floor(arr.length / 2);
+
+  if (arr.length < 3) {
     return -1;
   }
-  for (let index = 0; index < lengthArr; ) {
-    if (index < Math.floor(arr.length / 2)) {
+
+  while (true) {
+    if (shifted > arr.length) {
+      break;
+    }
+    for (let index = 0; index < mediumLength; ) {
       leftSum += arr[index];
+      index += 1;
     }
-    if (index > Math.floor(arr.length / 2)) {
+    for (let index = mediumLength; index < arr.length; ) {
       rightSum += arr[index];
+      index += 1;
     }
-    index += 1;
-  }
-  if (rightSum === leftSum) {
-    return 2;
+    if (rightSum === leftSum) {
+      return mediumLength;
+    }
+    if (rightSum > leftSum) {
+      mediumLength += 1;
+      shifted += 1;
+    } else {
+      mediumLength -= 1;
+      shifted += 1;
+    }
   }
   return -1;
 }
@@ -350,8 +364,68 @@ function getBalanceIndex(arr) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  let top = 0;
+  let bottom = size - 1;
+  let indexLeft = 0;
+  let indexRight = size - 1;
+  let row = 0;
+  let column = 0;
+  let value = 1;
+  const result = [];
+
+  for (let index = 0; index < size; ) {
+    result[index] = [];
+    for (let index2 = 0; index2 < size; ) {
+      result[index][index2] = undefined;
+      index2 += 1;
+    }
+    index += 1;
+  }
+
+  while (true) {
+    if (top > bottom) break;
+    top += 1;
+    while (column < indexRight) {
+      result[row][column] = value;
+      value += 1;
+      column += 1;
+    }
+
+    if (indexRight < indexLeft) {
+      break;
+    }
+    indexRight -= 1;
+
+    while (row < bottom) {
+      result[row][column] = value;
+      value += 1;
+      row += 1;
+    }
+
+    if (bottom < top) {
+      break;
+    }
+    bottom -= 1;
+
+    while (column > indexLeft) {
+      result[row][column] = value;
+      value += 1;
+      column -= 1;
+    }
+    if (indexLeft > indexRight) {
+      break;
+    }
+    indexLeft += 1;
+
+    while (row > top) {
+      result[row][column] = value;
+      value += 1;
+      row -= 1;
+    }
+  }
+  result[row][column] = value;
+  return result;
 }
 
 /**
@@ -387,8 +461,21 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  const arrResult = arr;
+  const lengthArr = arrResult.length;
+  for (let index = 0; index < lengthArr; ) {
+    for (let index2 = 0; index2 < lengthArr; ) {
+      if (arrResult[index2] > arrResult[index]) {
+        const elementLess = arrResult[index];
+        arrResult[index] = arrResult[index2];
+        arrResult[index2] = elementLess;
+      }
+      index2 += 1;
+    }
+    index += 1;
+  }
+  return arrResult;
 }
 
 /**
@@ -408,8 +495,27 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let iterationStr = '';
+  let result = str;
+  let counter = iterations;
+
+  while (counter > 0) {
+    for (let index = 0; index < str.length; ) {
+      iterationStr += result[index];
+      index += 2;
+    }
+
+    for (let index2 = 1; index2 < str.length; ) {
+      iterationStr += result[index2];
+      index2 += 2;
+    }
+
+    result = iterationStr;
+    iterationStr = '';
+    counter -= 1;
+  }
+  return result;
 }
 
 /**
@@ -429,8 +535,23 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const arr = Array.from(`${number}`);
+  let newNumber = 0;
+  for (let index = arr.length; index > 0; ) {
+    if (arr[index] > arr[index - 1]) {
+      const elementLess = arr[index - 1];
+      arr[index - 1] = arr[index];
+      arr[index] = elementLess;
+    }
+    newNumber = +arr.join('');
+    if (number < newNumber) {
+      return newNumber;
+    }
+
+    index -= 1;
+  }
+  return number;
 }
 
 module.exports = {
