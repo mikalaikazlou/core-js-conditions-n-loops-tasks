@@ -310,12 +310,11 @@ function isContainNumber(num, digit) {
 function getBalanceIndex(arr) {
   let rightSum = 0;
   let leftSum = 0;
-  let lengthArr = arr.length;
+  const lengthArr = arr.length;
   if (lengthArr === 0) {
     return -1;
   }
   for (let index = 0; index < lengthArr; ) {
-    
     if (index < Math.floor(arr.length / 2)) {
       leftSum += arr[index];
     }
