@@ -311,32 +311,35 @@ function getBalanceIndex(arr) {
   let rightSum = 0;
   let leftSum = 0;
   let shifted = 0;
-  let mediumLength = Math.floor(arr.length / 2);
-
+  let isReverse = false;
+  let oper = 1;
+  const mediumLength = Math.floor(arr.length / 2);
+  let isWork = true;
   if (arr.length < 3) {
     return -1;
   }
 
-  while (true) {
-    if (shifted > arr.length) {
-      break;
-    }
-    for (let index = 0; index < mediumLength; ) {
+  while (isWork) {
+    for (let index = 0; index < mediumLength + oper * shifted; index += 1) {
       leftSum += arr[index];
-      index += 1;
     }
-    for (let index = mediumLength; index < arr.length; ) {
+    for (
+      let index = mediumLength + oper * shifted;
+      index < arr.length;
+      index += 1
+    ) {
       rightSum += arr[index];
-      index += 1;
     }
+
     if (rightSum === leftSum) {
-      return mediumLength;
+      isWork = false;
+      return mediumLength + shifted;
     }
-    if (rightSum > leftSum) {
-      mediumLength += 1;
-      shifted += 1;
+    if (mediumLength === shifted && isReverse === false) {
+      isReverse = true;
+      oper = -1;
+      shifted = 0;
     } else {
-      mediumLength -= 1;
       shifted += 1;
     }
   }
@@ -373,7 +376,7 @@ function getSpiralMatrix(size) {
   let column = 0;
   let value = 1;
   const result = [];
-
+  let isWork = true;
   for (let index = 0; index < size; ) {
     result[index] = [];
     for (let index2 = 0; index2 < size; ) {
@@ -383,8 +386,11 @@ function getSpiralMatrix(size) {
     index += 1;
   }
 
-  while (true) {
-    if (top > bottom) break;
+  while (isWork) {
+    if (top > bottom) {
+      isWork = false;
+      break;
+    }
     top += 1;
     while (column < indexRight) {
       result[row][column] = value;
@@ -414,6 +420,7 @@ function getSpiralMatrix(size) {
       column -= 1;
     }
     if (indexLeft > indexRight) {
+      isWork = false;
       break;
     }
     indexLeft += 1;
