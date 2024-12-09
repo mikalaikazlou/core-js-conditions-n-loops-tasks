@@ -311,42 +311,24 @@ function isContainNumber(num, digit) {
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
 function getBalanceIndex(arr) {
-  let rightSum = 0;
+  let allSum = 0;
   let leftSum = 0;
-  let shifted = 0;
-  let isReverse = false;
-  let oper = 1;
-  const mediumLength = Math.floor(arr.length / 2);
-  let isWork = true;
-  if (arr.length < 3) {
-    return -1;
+  let result = -1;
+
+  for (let index = 0; index < arr.length; index += 1) {
+    allSum += arr[index];
   }
 
-  while (isWork) {
-    for (let index = 0; index < mediumLength + oper * shifted; index += 1) {
-      leftSum += arr[index];
+  for (let index = 0; index < arr.length; index += 1) {
+    allSum -= arr[index];
+    if (allSum === leftSum) {
+      result = index;
+      break;
     }
-    for (
-      let index = mediumLength + oper * shifted;
-      index < arr.length;
-      index += 1
-    ) {
-      rightSum += arr[index];
-    }
-
-    if (rightSum === leftSum) {
-      isWork = false;
-      return mediumLength + shifted;
-    }
-    if (mediumLength === shifted && isReverse === false) {
-      isReverse = true;
-      oper = -1;
-      shifted = 0;
-    } else {
-      shifted += 1;
-    }
+    leftSum += arr[index];
   }
-  return -1;
+
+  return result;
 }
 
 /**
